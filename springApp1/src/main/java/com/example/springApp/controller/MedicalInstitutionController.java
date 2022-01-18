@@ -8,6 +8,7 @@ import com.example.springApp.service.AddressService;
 import com.example.springApp.service.CityService;
 import com.example.springApp.service.MedicalInstitutionService;
 import com.example.springApp.service.PatientService;
+import com.example.springApp.util.ModelFiller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ public class MedicalInstitutionController {
     private PatientService patientService;
 
     @Autowired
-    private UtilityController controller;
+    private ModelFiller controller;
 
     @Autowired
     private CityService cityService;

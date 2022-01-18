@@ -3,6 +3,7 @@ package com.example.springApp.controller;
 import com.example.springApp.domain.*;
 import com.example.springApp.service.DiseaseService;
 import com.example.springApp.service.DiseaseTypeService;
+import com.example.springApp.util.ModelFiller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,7 @@ public class DiseaseController {
     private DiseaseTypeService diseaseTypeService;
 
     @Autowired
-    private UtilityController controller;
+    private ModelFiller controller;
 
     @GetMapping()
     public String menu() {

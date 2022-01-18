@@ -2,18 +2,16 @@ package com.example.springApp.controller;
 
 import com.example.springApp.domain.City;
 import com.example.springApp.domain.Disease;
-import com.example.springApp.domain.Patient;
 import com.example.springApp.repos.StatisticsRepo;
 import com.example.springApp.service.DiseaseService;
+import com.example.springApp.util.ModelFiller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.swing.text.html.parser.Parser;
 import java.util.stream.IntStream;
 
 @Controller
@@ -21,7 +19,7 @@ import java.util.stream.IntStream;
 public class StatisticsController {
 
     @Autowired
-    private UtilityController controller;
+    private ModelFiller controller;
 
     @Autowired
     private StatisticsRepo statisticsRepo;

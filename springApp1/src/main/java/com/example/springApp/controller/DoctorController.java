@@ -3,6 +3,7 @@ package com.example.springApp.controller;
 import com.example.springApp.DTO.PersonDTO;
 import com.example.springApp.domain.*;
 import com.example.springApp.service.*;
+import com.example.springApp.util.ModelFiller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,16 +21,13 @@ public class DoctorController {
     private DoctorService doctorService;
 
     @Autowired
-    private PersonService personService;
-
-    @Autowired
     private  SpecializationOfDoctorService specializationOfDoctorService;
 
     @Autowired
     private MedicalInstitutionService medicalInstitutionService;
 
     @Autowired
-    private UtilityController controller;
+    private ModelFiller controller;
 
     @Autowired
     private CertificateOfIllnessService certificateOfIllnessService;
