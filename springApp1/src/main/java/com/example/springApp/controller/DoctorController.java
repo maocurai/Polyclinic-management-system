@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/doctor")
@@ -81,22 +82,8 @@ public class DoctorController {
 
     @PostMapping("/update")
     public String update(PersonDTO patientDTO, @RequestParam(value = "personId", required = false) Doctor doctor, Model model) {
-        if(doctor == null) {
-            Doctor newDoctor = fillDoctor(patientDTO, (Doctor) personService.create(patientDTO, new Doctor()));
-            if(doctorService.findByPhone(patientDTO.getPhone()) != null) {
-                return fillModelForExistingPhone(newDoctor, model);
-            } else {
-                doctorService.save(newDoctor);
-            }
-        } else {
-            Doctor edited = doctorService.findById(doctor.getId());
-            if(doctorService.findByPhone(patientDTO.getPhone()) != null  && !edited.getPersonalInformation().getPhone().equals(patientDTO.getPhone())) {
-                return fillModelForExistingPhone(doctor, model);
-            } else {
-                doctorService.save(fillDoctor(patientDTO, (Doctor)personService.fillPerson(patientDTO, edited)));
-            }
-        }
-        return "redirect:/doctor";
+        Optional update = doctorService.update(doctor, patientDTO);
+        return (update.isEmpty()) ? "redirect:/doctor" : fillModelForExistingPhone((Doctor) update.get(), model);
     }
 
     public String fillModelForExistingPhone(Doctor doctor, Model model) {
@@ -108,12 +95,6 @@ public class DoctorController {
                 .addAttribute("phoneExists", true)
                 .addAttribute("currentAddress", doctor.getPersonalInformation().getAddress());
         return "personEdit";
-    }
-
-    public Doctor fillDoctor(PersonDTO personDTO, Doctor doctor) {
-        doctor.setSpecializationOfDoctor(specializationOfDoctorService.findById(personDTO.getSpecializationOfDoctorId()));
-        doctor.setMedicalInstitution(medicalInstitutionService.findById(personDTO.getMedicalInstitutionId()));
-        return doctor;
     }
 
     @PostMapping("/delete")

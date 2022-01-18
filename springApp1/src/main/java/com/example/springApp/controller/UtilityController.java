@@ -26,6 +26,7 @@ public class UtilityController {
     @Autowired
     private DiseaseTypeService diseaseTypeService;
 
+
     public Model fillModel(Model model) {
         return model.addAttribute("cities", cityService.findAll())
                 .addAttribute("regions", regionService.findAll())

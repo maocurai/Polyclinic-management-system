@@ -22,7 +22,7 @@ public class DiseaseController {
     private UtilityController controller;
 
     @GetMapping()
-    public String menu(Model model) {
+    public String menu() {
         return "diseaseMenu";
     }
 
