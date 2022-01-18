@@ -15,9 +15,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UtilityController controller;
-
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userService.findAll());
