@@ -4,6 +4,7 @@ import com.example.springApp.DTO.MedicalInstitutionDTO;
 import com.example.springApp.domain.Address;
 import com.example.springApp.domain.City;
 import com.example.springApp.domain.MedicalInstitution;
+import com.example.springApp.service.AddressService;
 import com.example.springApp.service.CityService;
 import com.example.springApp.service.MedicalInstitutionService;
 import com.example.springApp.service.PatientService;
@@ -26,6 +27,9 @@ public class MedicalInstitutionController {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private AddressService addressService;
 
     @GetMapping
     public String list(@RequestParam(value = "cityId", required = false) City city, Model model) {
@@ -62,10 +66,10 @@ public class MedicalInstitutionController {
     @PostMapping("/update")
     public String update(MedicalInstitutionDTO medicalInstitutionDTO, @RequestParam(value = "medicalInstitutionId", required = false) MedicalInstitution medicalInstitution) {
         if(medicalInstitution == null) {
-            medicalInstitutionService.save(new MedicalInstitution(medicalInstitutionDTO.getName(), controller.createAddress(medicalInstitutionDTO), false));
+            medicalInstitutionService.save(new MedicalInstitution(medicalInstitutionDTO.getName(), addressService.create(medicalInstitutionDTO), false));
         } else {
             MedicalInstitution edited = medicalInstitutionService.findById(medicalInstitution.getId());
-            controller.fillAddress(medicalInstitutionDTO, edited.getAddress());
+            addressService.fill(medicalInstitutionDTO, edited.getAddress());
             edited.setName(medicalInstitutionDTO.getName());
             medicalInstitutionService.save(edited);
         }

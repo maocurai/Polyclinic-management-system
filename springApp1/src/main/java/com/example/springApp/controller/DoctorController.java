@@ -2,10 +2,7 @@ package com.example.springApp.controller;
 
 import com.example.springApp.DTO.PersonDTO;
 import com.example.springApp.domain.*;
-import com.example.springApp.service.CertificateOfIllnessService;
-import com.example.springApp.service.DoctorService;
-import com.example.springApp.service.MedicalInstitutionService;
-import com.example.springApp.service.SpecializationOfDoctorService;
+import com.example.springApp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +17,9 @@ import java.util.List;
 public class DoctorController {
     @Autowired
     private DoctorService doctorService;
+
+    @Autowired
+    private PersonService personService;
 
     @Autowired
     private  SpecializationOfDoctorService specializationOfDoctorService;
@@ -82,7 +82,7 @@ public class DoctorController {
     @PostMapping("/update")
     public String update(PersonDTO patientDTO, @RequestParam(value = "personId", required = false) Doctor doctor, Model model) {
         if(doctor == null) {
-            Doctor newDoctor = fillDoctor(patientDTO, (Doctor) controller.createPerson(patientDTO, new Doctor()));
+            Doctor newDoctor = fillDoctor(patientDTO, (Doctor) personService.create(patientDTO, new Doctor()));
             if(doctorService.findByPhone(patientDTO.getPhone()) != null) {
                 return fillModelForExistingPhone(newDoctor, model);
             } else {
@@ -93,7 +93,7 @@ public class DoctorController {
             if(doctorService.findByPhone(patientDTO.getPhone()) != null  && !edited.getPersonalInformation().getPhone().equals(patientDTO.getPhone())) {
                 return fillModelForExistingPhone(doctor, model);
             } else {
-                doctorService.save(fillDoctor(patientDTO, (Doctor) controller.fillPerson(patientDTO, edited)));
+                doctorService.save(fillDoctor(patientDTO, (Doctor)personService.fillPerson(patientDTO, edited)));
             }
         }
         return "redirect:/doctor";

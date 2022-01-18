@@ -1,14 +1,18 @@
 package com.example.springApp.controller;
 
 import com.example.springApp.DTO.PersonDTO;
-import com.example.springApp.domain.*;
-import com.example.springApp.service.*;
+import com.example.springApp.domain.Address;
+import com.example.springApp.domain.Doctor;
+import com.example.springApp.domain.Patient;
+import com.example.springApp.service.CertificateOfIllnessService;
+import com.example.springApp.service.DoctorService;
+import com.example.springApp.service.PatientService;
+import com.example.springApp.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +29,9 @@ public class PatientController {
 
     @Autowired
     private UtilityController controller;
+
+    @Autowired
+    private PersonService personService;
 
     @Autowired
     private CertificateOfIllnessService certificateOfIllnessService;
@@ -76,7 +83,7 @@ public class PatientController {
                          @RequestParam(value = "personId", required = false) Patient patient,
                          @RequestParam(value = "doctorId", required = false) Doctor doctor, Model model) {
         if(patient == null) {
-            Patient newPatient = (Patient) controller.createPerson(patientDTO, new Patient());
+            Patient newPatient = (Patient) personService.create(patientDTO, new Patient());
             if(patientService.findByPhone(patientDTO.getPhone()) != null) {
                 return fillModelForExistingPhone(newPatient, doctor, model);
             } else {
@@ -91,7 +98,7 @@ public class PatientController {
             if(patientService.findByPhone(patientDTO.getPhone()) != null && !edited.getPersonalInformation().getPhone().equals(patientDTO.getPhone())) {
                 return fillModelForExistingPhone(edited, doctor, model);
             } else {
-                patientService.save((Patient) controller.fillPerson(patientDTO, edited));
+                patientService.save((Patient) personService.fillPerson(patientDTO, edited));
             }
         }
         return (doctor == null) ? "redirect:/patient" : ("redirect:/doctor/info/" + doctor.getId());
