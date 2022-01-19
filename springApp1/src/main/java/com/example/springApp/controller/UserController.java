@@ -8,12 +8,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
 
     @GetMapping
     public String userList(Model model) {
@@ -34,9 +39,11 @@ public class UserController {
             @RequestParam("role") String role,
             @RequestParam("userId") User user
     ) {
+        LOGGER.log(Level.INFO, "User added {0}", user);
         user.setUsername(username);
         user.setRole(Role.valueOf(role));
         userService.save(user);
+        LOGGER.log(Level.INFO, "User saved");
         return "redirect:/user";
     }
 }

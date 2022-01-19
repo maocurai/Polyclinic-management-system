@@ -118,4 +118,15 @@ public class Doctor implements Person{
     public void addPatient(Patient patient) {
         patientSet.add(patient);
     }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", personalInformation=" + personalInformation +
+                ", specializationOfDoctor=" + specializationOfDoctor +
+                ", medicalInstitution=" + medicalInstitution +
+                '}';
+    }
 }

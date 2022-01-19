@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/doctor")
@@ -32,6 +34,7 @@ public class DoctorController {
     @Autowired
     private CertificateOfIllnessService certificateOfIllnessService;
 
+    private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
 
     @GetMapping
     public String list(@RequestParam(value = "phone", required = false) String phone, Model model) {
@@ -97,6 +100,7 @@ public class DoctorController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam("personId") Doctor doctor) {
+        LOGGER.log(Level.INFO, "Deleted doctor {0}", doctor);
         doctorService.deleteById(doctor.getId());
         return "redirect:/doctor";
     }
